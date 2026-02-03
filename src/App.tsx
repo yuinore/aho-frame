@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
+import { getDefaultForm, readSettings, writeSettings } from './cookie.ts';
 
 const BPM_COUNTER_URL = 'http://www.k3.dion.ne.jp/~kidego/2008/bpmcounter.html';
 const ROW_COUNT = 512;
@@ -12,13 +13,72 @@ function parseNum(value: string, fallback: number): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
+function getInitialForm(): {
+  beatInterval: number;
+  beatOffset: number;
+  fps: number;
+  bpm: number;
+  frameOffset: number;
+} {
+  try {
+    const s = readSettings();
+    if (s) {
+      return {
+        beatInterval: s.beatInterval,
+        beatOffset: s.beatOffset,
+        fps: s.fps,
+        bpm: s.bpm,
+        frameOffset: s.frameOffset,
+      };
+    }
+  } catch {
+    // use defaults
+  }
+  return getDefaultForm();
+}
+
 function App() {
   const { t, i18n } = useTranslation();
-  const [beatInterval, setBeatInterval] = useState(1);
-  const [beatOffset, setBeatOffset] = useState(0);
-  const [fps, setFps] = useState(30);
-  const [bpm, setBpm] = useState(176);
-  const [frameOffset, setFrameOffset] = useState(0);
+  const [beatInterval, setBeatInterval] = useState(
+    () => getInitialForm().beatInterval,
+  );
+  const [beatOffset, setBeatOffset] = useState(
+    () => getInitialForm().beatOffset,
+  );
+  const [fps, setFps] = useState(() => getInitialForm().fps);
+  const [bpm, setBpm] = useState(() => getInitialForm().bpm);
+  const [frameOffset, setFrameOffset] = useState(
+    () => getInitialForm().frameOffset,
+  );
+
+  useEffect(() => {
+    try {
+      const s = readSettings();
+      if (s?.lang === 'ja' || s?.lang === 'en') {
+        i18n.changeLanguage(s.lang);
+      }
+    } catch {
+      // use default language
+    }
+  }, [i18n]);
+
+  const isFirstWrite = useRef(true);
+  useEffect(() => {
+    if (isFirstWrite.current) {
+      isFirstWrite.current = false;
+      return;
+    }
+    const lang =
+      i18n.language === 'ja' || i18n.language === 'en' ? i18n.language : 'ja';
+    writeSettings({
+      beatInterval,
+      beatOffset,
+      fps,
+      bpm,
+      frameOffset,
+      lang,
+    });
+  }, [beatInterval, beatOffset, fps, bpm, frameOffset, i18n.language]);
 
   const rows = useMemo(() => {
     const result: { beat: number; frameInt: string; frameDec: string }[] = [];
