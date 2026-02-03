@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
@@ -12,6 +13,7 @@ function parseNum(value: string, fallback: number): number {
 }
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [beatInterval, setBeatInterval] = useState(1);
   const [beatOffset, setBeatOffset] = useState(0);
   const [fps, setFps] = useState(30);
@@ -36,21 +38,32 @@ function App() {
 
   return (
     <Container className="py-3">
-      <h1>アホフレーム</h1>
+      <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
+        <h1 className="mb-0">{t('title')}</h1>
+        <Form.Select
+          value={i18n.language}
+          onChange={(e) => i18n.changeLanguage(e.target.value as 'ja' | 'en')}
+          className="w-auto"
+          aria-label={t('ariaLanguage')}
+        >
+          <option value="ja">{t('langJapanese')}</option>
+          <option value="en">{t('langEnglish')}</option>
+        </Form.Select>
+      </div>
       <hr />
-      フレーム数は電卓で計算するの！ 私・・・、アホだから！
+      {t('catchphrase')}
       <br />
       <hr />
-      便利ツール →{' '}
+      {t('toolsPrefix')}{' '}
       <a href={BPM_COUNTER_URL} target="_blank" rel="noopener noreferrer">
-        BPM計測器
+        {t('bpmCounterLink')}
       </a>
       <hr />
       <div className="row">
         <div className="col-lg-6">
           <Form className="mb-3">
             <Form.Group as="div" className="mb-2">
-              <Form.Label className="me-1">拍数 =</Form.Label>
+              <Form.Label className="me-1">{t('beatFormulaLabel')}</Form.Label>
               <Form.Control
                 type="text"
                 value={beatInterval}
@@ -59,9 +72,9 @@ function App() {
                 }
                 className="d-inline-block w-auto me-1"
                 style={{ maxWidth: '6em' }}
-                aria-label="拍間隔"
+                aria-label={t('ariaBeatInterval')}
               />
-              <span className="me-1">* n +</span>
+              <span className="me-1">{t('beatFormulaSuffix')}</span>
               <Form.Control
                 type="text"
                 value={beatOffset}
@@ -70,34 +83,34 @@ function App() {
                 }
                 className="d-inline-block w-auto me-1"
                 style={{ maxWidth: '6em' }}
-                aria-label="拍オフセット"
+                aria-label={t('ariaBeatOffset')}
               />
-              <span>拍</span>
+              <span>{t('beatUnit')}</span>
             </Form.Group>
             <Form.Group className="mb-2">
-              <Form.Label className="me-1">FPS =</Form.Label>
+              <Form.Label className="me-1">{t('fpsLabel')}</Form.Label>
               <Form.Control
                 type="text"
                 value={fps}
                 onChange={(e) => setFps(parseNum(e.target.value, fps))}
                 className="d-inline-block w-auto"
                 style={{ maxWidth: '6em' }}
-                aria-label="FPS"
+                aria-label={t('ariaFps')}
               />
             </Form.Group>
             <Form.Group className="mb-2">
-              <Form.Label className="me-1">BPM =</Form.Label>
+              <Form.Label className="me-1">{t('bpmLabel')}</Form.Label>
               <Form.Control
                 type="text"
                 value={bpm}
                 onChange={(e) => setBpm(parseNum(e.target.value, bpm))}
                 className="d-inline-block w-auto"
                 style={{ maxWidth: '6em' }}
-                aria-label="BPM"
+                aria-label={t('ariaBpm')}
               />
             </Form.Group>
             <Form.Group className="mb-2">
-              <Form.Label className="me-1">フレームオフセット =</Form.Label>
+              <Form.Label className="me-1">{t('frameOffsetLabel')}</Form.Label>
               <Form.Control
                 type="text"
                 value={frameOffset}
@@ -106,7 +119,7 @@ function App() {
                 }
                 className="d-inline-block w-auto"
                 style={{ maxWidth: '6em' }}
-                aria-label="フレームオフセット"
+                aria-label={t('ariaFrameOffset')}
               />
             </Form.Group>
           </Form>
@@ -115,9 +128,9 @@ function App() {
           <Table striped hover responsive>
             <thead>
               <tr>
-                <th>拍</th>
-                <th>整数フレーム</th>
-                <th>フレーム</th>
+                <th>{t('tableBeat')}</th>
+                <th>{t('tableFrameInt')}</th>
+                <th>{t('tableFrame')}</th>
               </tr>
             </thead>
             <tbody>

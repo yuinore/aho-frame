@@ -1,0 +1,23 @@
+{
+  "title": "アホフレーム",
+  "catchphrase": "フレーム数は電卓で計算するの！ 私・・・、アホだから！",
+  "toolsPrefix": "便利ツール →",
+  "bpmCounterLink": "BPM計測器",
+  "beatFormulaLabel": "拍数 =",
+  "beatFormulaSuffix": "* n +",
+  "beatUnit": "拍",
+  "fpsLabel": "FPS =",
+  "bpmLabel": "BPM =",
+  "frameOffsetLabel": "フレームオフセット =",
+  "tableBeat": "拍",
+  "tableFrameInt": "整数フレーム",
+  "tableFrame": "フレーム",
+  "langJapanese": "日本語",
+  "langEnglish": "English",
+  "ariaBeatInterval": "拍間隔",
+  "ariaBeatOffset": "拍オフセット",
+  "ariaFps": "FPS",
+  "ariaBpm": "BPM",
+  "ariaFrameOffset": "フレームオフセット",
+  "ariaLanguage": "表示言語"
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Aho Frame",
+  "catchphrase": "I use a calculator for frame numbers... because I'm such a fool!",
+  "toolsPrefix": "Handy tool →",
+  "bpmCounterLink": "BPM counter",
+  "beatFormulaLabel": "Beats =",
+  "beatFormulaSuffix": "* n +",
+  "beatUnit": "beats",
+  "fpsLabel": "FPS =",
+  "bpmLabel": "BPM =",
+  "frameOffsetLabel": "Frame offset =",
+  "tableBeat": "Beat",
+  "tableFrameInt": "Frame (int)",
+  "tableFrame": "Frame",
+  "langJapanese": "日本語",
+  "langEnglish": "English",
+  "ariaBeatInterval": "Beat interval",
+  "ariaBeatOffset": "Beat offset",
+  "ariaFps": "FPS",
+  "ariaBpm": "BPM",
+  "ariaFrameOffset": "Frame offset",
+  "ariaLanguage": "Display language"
+}
