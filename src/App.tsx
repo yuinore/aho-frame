@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 import { getDefaultForm, readSettings, writeSettings } from './cookie.ts';
 
-const BPM_COUNTER_URL = 'http://www.k3.dion.ne.jp/~kidego/2008/bpmcounter.html';
+const BPM_COUNTER_URL = 'https://yuinore.moe/bayes_bpm_counter.html';
 const ROW_COUNT = 512;
 
 function parseNum(value: string, fallback: number): number {
@@ -97,7 +97,7 @@ function App() {
   }, [beatInterval, beatOffset, fps, bpm, frameOffset]);
 
   return (
-    <Container className="py-3">
+    <Container fluid className="py-3 px-3 px-lg-4">
       <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
         <h1 className="mb-0">{t('title')}</h1>
         <Form.Select
@@ -125,7 +125,8 @@ function App() {
             <Form.Group as="div" className="mb-2">
               <Form.Label className="me-1">{t('beatFormulaLabel')}</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
+                step="any"
                 value={beatInterval}
                 onChange={(e) =>
                   setBeatInterval(parseNum(e.target.value, beatInterval))
@@ -136,7 +137,8 @@ function App() {
               />
               <span className="me-1">{t('beatFormulaSuffix')}</span>
               <Form.Control
-                type="text"
+                type="number"
+                step="any"
                 value={beatOffset}
                 onChange={(e) =>
                   setBeatOffset(parseNum(e.target.value, beatOffset))
@@ -150,7 +152,8 @@ function App() {
             <Form.Group className="mb-2">
               <Form.Label className="me-1">{t('fpsLabel')}</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
+                step="any"
                 value={fps}
                 onChange={(e) => setFps(parseNum(e.target.value, fps))}
                 className="d-inline-block w-auto"
@@ -161,7 +164,8 @@ function App() {
             <Form.Group className="mb-2">
               <Form.Label className="me-1">{t('bpmLabel')}</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
+                step="any"
                 value={bpm}
                 onChange={(e) => setBpm(parseNum(e.target.value, bpm))}
                 className="d-inline-block w-auto"
@@ -172,7 +176,8 @@ function App() {
             <Form.Group className="mb-2">
               <Form.Label className="me-1">{t('frameOffsetLabel')}</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
+                step="any"
                 value={frameOffset}
                 onChange={(e) =>
                   setFrameOffset(parseNum(e.target.value, frameOffset))
@@ -185,7 +190,7 @@ function App() {
           </Form>
         </div>
         <div className="col-lg-6">
-          <Table striped hover responsive>
+          <Table striped bordered hover variant="dark" responsive>
             <thead>
               <tr>
                 <th>{t('tableBeat')}</th>

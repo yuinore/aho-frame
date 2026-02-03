@@ -2,7 +2,7 @@
   "title": "アホフレーム",
   "catchphrase": "フレーム数は電卓で計算するの！ 私・・・、アホだから！",
   "toolsPrefix": "便利ツール →",
-  "bpmCounterLink": "BPM計測器",
+  "bpmCounterLink": "ベイズBPM計測器",
   "beatFormulaLabel": "拍数 =",
   "beatFormulaSuffix": "* n +",
   "beatUnit": "拍",
