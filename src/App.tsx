@@ -14,6 +14,7 @@ function parseNum(value: string, fallback: number): number {
 }
 
 function getInitialForm(): {
+  lang: 'ja' | 'en';
   beatInterval: number;
   beatOffset: number;
   fps: number;
@@ -24,6 +25,7 @@ function getInitialForm(): {
     const s = readSettings();
     if (s) {
       return {
+        lang: s.lang,
         beatInterval: s.beatInterval,
         beatOffset: s.beatOffset,
         fps: s.fps,
@@ -32,6 +34,7 @@ function getInitialForm(): {
       };
     }
   } catch {
+    console.error('Failed to read settings');
     // use defaults
   }
   return getDefaultForm();
@@ -39,31 +42,17 @@ function getInitialForm(): {
 
 function App() {
   const { t, i18n } = useTranslation();
-  const [beatInterval, setBeatInterval] = useState(
-    () => getInitialForm().beatInterval,
-  );
-  const [beatOffset, setBeatOffset] = useState(
-    () => getInitialForm().beatOffset,
-  );
-  const [fps, setFps] = useState(() => getInitialForm().fps);
-  const [bpm, setBpm] = useState(() => getInitialForm().bpm);
-  const [frameOffset, setFrameOffset] = useState(
-    () => getInitialForm().frameOffset,
-  );
-
-  useEffect(() => {
-    try {
-      const s = readSettings();
-      if (s?.lang === 'ja' || s?.lang === 'en') {
-        i18n.changeLanguage(s.lang);
-      }
-    } catch {
-      // use default language
-    }
-  }, [i18n]);
+  const initialForm = useMemo(() => getInitialForm(), []);
+  const [lang, setLang] = useState(initialForm.lang);
+  const [beatInterval, setBeatInterval] = useState(initialForm.beatInterval);
+  const [beatOffset, setBeatOffset] = useState(initialForm.beatOffset);
+  const [fps, setFps] = useState(initialForm.fps);
+  const [bpm, setBpm] = useState(initialForm.bpm);
+  const [frameOffset, setFrameOffset] = useState(initialForm.frameOffset);
 
   const isFirstWrite = useRef(true);
   useEffect(() => {
+    console.log('useEffect[writeSettings]', initialForm);
     if (isFirstWrite.current) {
       isFirstWrite.current = false;
       return;
@@ -81,6 +70,14 @@ function App() {
   }, [beatInterval, beatOffset, fps, bpm, frameOffset, i18n.language]);
 
   const rows = useMemo(() => {
+    console.log(
+      'useMemo[rows]',
+      beatInterval,
+      beatOffset,
+      fps,
+      bpm,
+      frameOffset,
+    );
     const result: { beat: number; frameInt: string; frameDec: string }[] = [];
     for (let x = 0; x < ROW_COUNT; x++) {
       const beat = x * beatInterval + beatOffset;
@@ -96,13 +93,31 @@ function App() {
     return result;
   }, [beatInterval, beatOffset, fps, bpm, frameOffset]);
 
+  const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === 'ja' || e.target.value === 'en') {
+      const newLang = e.target.value;
+      setLang(newLang);
+      i18n.changeLanguage(newLang);
+      writeSettings({
+        lang: newLang,
+        beatInterval,
+        beatOffset,
+        fps,
+        bpm,
+        frameOffset,
+      });
+    }
+  };
+
+  console.log('render', beatInterval, beatOffset, fps, bpm, frameOffset);
+
   return (
     <Container fluid className="py-3 px-3 px-lg-4">
       <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
         <h1 className="mb-0">{t('title')}</h1>
         <Form.Select
-          value={i18n.language}
-          onChange={(e) => i18n.changeLanguage(e.target.value as 'ja' | 'en')}
+          value={lang}
+          onChange={handleChangeLanguage}
           className="w-auto"
           aria-label={t('ariaLanguage')}
         >

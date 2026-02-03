@@ -2,15 +2,16 @@ const COOKIE_NAME = 'ahoframe_settings';
 const MAX_AGE_DAYS = 30;
 
 export interface StoredSettings {
+  lang: 'ja' | 'en';
   beatInterval: number;
   beatOffset: number;
   fps: number;
   bpm: number;
   frameOffset: number;
-  lang: 'ja' | 'en';
 }
 
-const DEFAULT_FORM: Omit<StoredSettings, 'lang'> = {
+const DEFAULT_FORM: StoredSettings = {
+  lang: 'ja',
   beatInterval: 1,
   beatOffset: 0,
   fps: 30,
@@ -99,6 +100,6 @@ export function writeSettings(settings: StoredSettings): void {
   }
 }
 
-export function getDefaultForm(): Omit<StoredSettings, 'lang'> {
+export function getDefaultForm(): StoredSettings {
   return { ...DEFAULT_FORM };
 }
