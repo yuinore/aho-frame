@@ -9,6 +9,7 @@
   "fpsLabel": "FPS =",
   "bpmLabel": "BPM =",
   "frameOffsetLabel": "Frame offset =",
+  "downloadScript": "Download JSX script",
   "tableBeat": "Beat",
   "tableFrameInt": "Frame (int)",
   "tableFrame": "Frame",

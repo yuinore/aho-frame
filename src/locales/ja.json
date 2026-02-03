@@ -9,6 +9,7 @@
   "fpsLabel": "FPS =",
   "bpmLabel": "BPM =",
   "frameOffsetLabel": "フレームオフセット =",
+  "downloadScript": "JSX スクリプトをダウンロード",
   "tableBeat": "拍",
   "tableFrameInt": "整数フレーム",
   "tableFrame": "フレーム",

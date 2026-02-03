@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
+import { generateJsxScript } from './downloadScript.ts';
+import { downloadText } from './downloadText.ts';
 import { getDefaultForm, readSettings, writeSettings } from './cookie.ts';
 
 const BPM_COUNTER_URL = 'https://yuinore.moe/bayes_bpm_counter.html';
@@ -82,20 +85,32 @@ function App() {
       bpm,
       frameOffset,
     );
-    const result: { beat: number; frameInt: string; frameDec: string }[] = [];
+    const result: {
+      beat: number;
+      frameInt: string;
+      frameDec: string;
+      frameIntNum: number;
+    }[] = [];
     for (let x = 0; x < ROW_COUNT; x++) {
       const beat = x * beatInterval + beatOffset;
       const frame = ((60 * fps) / (bpm || 1)) * beat + frameOffset;
-      const frameInt = Math.round(frame * 1) / 1;
+      const frameIntNum = Math.round(frame * 1) / 1;
       const frameDec = Math.round(frame * 100) / 100;
       result.push({
         beat,
-        frameInt: `${frameInt} f`,
+        frameInt: `${frameIntNum} f`,
         frameDec: `${frameDec} f`,
+        frameIntNum,
       });
     }
     return result;
   }, [beatInterval, beatOffset, fps, bpm, frameOffset]);
+
+  const handleDownloadScript = () => {
+    const frames = rows.map((row) => row.frameIntNum);
+    const script = generateJsxScript(frames, fps);
+    downloadText(script, 'AddKeyframes', 'jsx');
+  };
 
   const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === 'ja' || e.target.value === 'en') {
@@ -206,6 +221,13 @@ function App() {
                 aria-label={t('ariaFrameOffset')}
               />
             </Form.Group>
+            <Button
+              variant="secondary"
+              className="mt-3"
+              onClick={handleDownloadScript}
+            >
+              {t('downloadScript')}
+            </Button>
           </Form>
         </div>
         <div className="col-lg-6">
