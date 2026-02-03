@@ -1,5 +1,5 @@
 // After Effects JSX Script template
-export const ADD_KEYFRAMES_SCRIPT = `// Add Keyframes
+export const ADD_KEYFRAMES_SCRIPT = `// ✓ Add Keyframes
 app.beginUndoGroup("Add Keyframes");
 
 function main() {
@@ -17,7 +17,7 @@ function main() {
     return;
   }
 
-  var times = <TIMES_ARRAY>; // 秒
+  var times = <TIMES_ARRAY>; // seconds
   var fps = <FPS>;
 
   for (var i = 0; i < props.length; i++) {
