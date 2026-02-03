@@ -50,9 +50,13 @@ function App() {
   const [bpm, setBpm] = useState(initialForm.bpm);
   const [frameOffset, setFrameOffset] = useState(initialForm.frameOffset);
 
+  if (i18n.language !== lang) {
+    i18n.changeLanguage(lang);
+  }
+
   const isFirstWrite = useRef(true);
   useEffect(() => {
-    console.log('useEffect[writeSettings]', initialForm);
+    console.log('useEffect[writeSettings]');
     if (isFirstWrite.current) {
       isFirstWrite.current = false;
       return;
