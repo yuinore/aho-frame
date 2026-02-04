@@ -7,9 +7,18 @@ import Table from 'react-bootstrap/Table';
 import { generateJsxScript } from './downloadScript.ts';
 import { downloadText } from './downloadText.ts';
 import { getDefaultForm, readSettings, writeSettings } from './cookie.ts';
+import { formatTimecode } from './formatTimecode.ts';
 
 const BPM_COUNTER_URL = 'https://yuinore.moe/bayes_bpm_counter.html';
 const ROW_COUNT = 512;
+
+interface FrameRow {
+  beat: number;
+  frameInt: string;
+  frameDec: string;
+  frameIntNum: number;
+  timecode: string;
+}
 
 function parseNum(value: string, fallback: number): number {
   const n = parseFloat(value);
@@ -85,12 +94,7 @@ function App() {
       bpm,
       frameOffset,
     );
-    const result: {
-      beat: number;
-      frameInt: string;
-      frameDec: string;
-      frameIntNum: number;
-    }[] = [];
+    const result: FrameRow[] = [];
     for (let x = 0; x < ROW_COUNT; x++) {
       const beat = x * beatInterval + beatOffset;
       const frame = ((60 * fps) / (bpm || 1)) * beat + frameOffset;
@@ -99,8 +103,9 @@ function App() {
       result.push({
         beat,
         frameInt: `${frameIntNum} f`,
-        frameDec: `${frameDec} f`,
+        frameDec: `${frameDec.toFixed(2)} f`,
         frameIntNum,
+        timecode: formatTimecode(frameIntNum, fps),
       });
     }
     return result;
@@ -237,6 +242,7 @@ function App() {
                 <th>{t('tableBeat')}</th>
                 <th>{t('tableFrameInt')}</th>
                 <th>{t('tableFrame')}</th>
+                <th>{t('tableTimecode')}</th>
               </tr>
             </thead>
             <tbody>
@@ -245,6 +251,7 @@ function App() {
                   <td>{row.beat}</td>
                   <td>{row.frameInt}</td>
                   <td>{row.frameDec}</td>
+                  <td>{row.timecode}</td>
                 </tr>
               ))}
             </tbody>

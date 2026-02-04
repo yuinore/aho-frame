@@ -13,6 +13,7 @@
   "tableBeat": "Beat",
   "tableFrameInt": "Frame (int)",
   "tableFrame": "Frame",
+  "tableTimecode": "Timecode",
   "langJapanese": "日本語",
   "langEnglish": "English",
   "ariaBeatInterval": "Beat interval",
