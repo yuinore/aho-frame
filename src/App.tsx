@@ -251,6 +251,16 @@ function App() {
           </Table>
         </div>
       </div>
+      <footer className="mt-1 pt-3 text-muted small text-center">
+        Directed & Built by yuinore / See GitHub →{' '}
+        <a
+          href="https://github.com/yuinore/aho-frame"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://github.com/yuinore/aho-frame
+        </a>
+      </footer>
     </Container>
   );
 }
