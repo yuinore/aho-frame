@@ -1,6 +1,6 @@
 # Aho Frame
 
-A web app that converts beats to frame numbers. Useful for rhythm games, music timing, and video editing.
+A web app that converts beats to frame numbers. Useful for video editing.
 
 **Catchphrase:** _"I use a calculator for frame numbers... because I'm such a fool!"_
 
@@ -57,8 +57,8 @@ yarn preview
 ### Lint & format
 
 ```bash
-yarn lint
-yarn prettier
+yarn lint:fix
+yarn format
 ```
 
 ## License

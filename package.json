@@ -1,14 +1,19 @@
 {
   "name": "aho-frame",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Web app that converts beats to frame numbers for video editing",
+  "license": "MIT",
+  "author": "yuinore",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "prettier": "prettier --write .",
-    "preview": "vite preview"
+    "lint:fix": "eslint --fix .",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
