@@ -8,6 +8,7 @@ import { generateJsxScript } from './downloadScript.ts';
 import { downloadText } from './downloadText.ts';
 import { getDefaultForm, readSettings, writeSettings } from './cookie.ts';
 import { formatTimecode } from './formatTimecode.ts';
+import { NumericTextInput } from './components/NumericTextInput.tsx';
 
 const BPM_COUNTER_URL = 'https://yuinore.moe/bayes_bpm_counter.html';
 const ROW_COUNT = 512;
@@ -56,11 +57,22 @@ function App() {
   const { t, i18n } = useTranslation();
   const initialForm = useMemo(() => getInitialForm(), []);
   const [lang, setLang] = useState(initialForm.lang);
-  const [beatInterval, setBeatInterval] = useState(initialForm.beatInterval);
-  const [beatOffset, setBeatOffset] = useState(initialForm.beatOffset);
-  const [fps, setFps] = useState(initialForm.fps);
-  const [bpm, setBpm] = useState(initialForm.bpm);
-  const [frameOffset, setFrameOffset] = useState(initialForm.frameOffset);
+  const [beatIntervalInput, setBeatIntervalInput] = useState(
+    String(initialForm.beatInterval),
+  );
+  const [beatOffsetInput, setBeatOffsetInput] = useState(
+    String(initialForm.beatOffset),
+  );
+  const [fpsInput, setFpsInput] = useState(String(initialForm.fps));
+  const [bpmInput, setBpmInput] = useState(String(initialForm.bpm));
+  const [frameOffsetInput, setFrameOffsetInput] = useState(
+    String(initialForm.frameOffset),
+  );
+  const beatInterval = parseNum(beatIntervalInput, initialForm.beatInterval);
+  const beatOffset = parseNum(beatOffsetInput, initialForm.beatOffset);
+  const fps = parseNum(fpsInput, initialForm.fps);
+  const bpm = parseNum(bpmInput, initialForm.bpm);
+  const frameOffset = parseNum(frameOffsetInput, initialForm.frameOffset);
 
   if (i18n.language !== lang) {
     i18n.changeLanguage(lang);
@@ -163,25 +175,17 @@ function App() {
           <Form className="mb-3">
             <Form.Group as="div" className="mb-2">
               <Form.Label className="me-1">{t('beatFormulaLabel')}</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                value={beatInterval}
-                onChange={(e) =>
-                  setBeatInterval(parseNum(e.target.value, beatInterval))
-                }
+              <NumericTextInput
+                value={beatIntervalInput}
+                onChange={setBeatIntervalInput}
                 className="d-inline-block w-auto me-1"
                 style={{ maxWidth: '6em' }}
                 aria-label={t('ariaBeatInterval')}
               />
               <span className="me-1">{t('beatFormulaSuffix')}</span>
-              <Form.Control
-                type="number"
-                step="any"
-                value={beatOffset}
-                onChange={(e) =>
-                  setBeatOffset(parseNum(e.target.value, beatOffset))
-                }
+              <NumericTextInput
+                value={beatOffsetInput}
+                onChange={setBeatOffsetInput}
                 className="d-inline-block w-auto me-1"
                 style={{ maxWidth: '6em' }}
                 aria-label={t('ariaBeatOffset')}
@@ -190,11 +194,9 @@ function App() {
             </Form.Group>
             <Form.Group className="mb-2">
               <Form.Label className="me-1">{t('fpsLabel')}</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                value={fps}
-                onChange={(e) => setFps(parseNum(e.target.value, fps))}
+              <NumericTextInput
+                value={fpsInput}
+                onChange={setFpsInput}
                 className="d-inline-block w-auto"
                 style={{ maxWidth: '6em' }}
                 aria-label={t('ariaFps')}
@@ -202,11 +204,9 @@ function App() {
             </Form.Group>
             <Form.Group className="mb-2">
               <Form.Label className="me-1">{t('bpmLabel')}</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                value={bpm}
-                onChange={(e) => setBpm(parseNum(e.target.value, bpm))}
+              <NumericTextInput
+                value={bpmInput}
+                onChange={setBpmInput}
                 className="d-inline-block w-auto"
                 style={{ maxWidth: '6em' }}
                 aria-label={t('ariaBpm')}
@@ -214,13 +214,9 @@ function App() {
             </Form.Group>
             <Form.Group className="mb-2">
               <Form.Label className="me-1">{t('frameOffsetLabel')}</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                value={frameOffset}
-                onChange={(e) =>
-                  setFrameOffset(parseNum(e.target.value, frameOffset))
-                }
+              <NumericTextInput
+                value={frameOffsetInput}
+                onChange={setFrameOffsetInput}
                 className="d-inline-block w-auto"
                 style={{ maxWidth: '6em' }}
                 aria-label={t('ariaFrameOffset')}
